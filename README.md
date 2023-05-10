@@ -23,7 +23,7 @@ sudo docker run --rm -ti --user "0:0" --privileged \
     -v "/dev/bus/usb:/dev/bus/usb" -v "$(realpath .):/app" \
     ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest \
     bash -c "\
-        sed -i 's#keyboard->alignmentMarginY = 60;#keyboard->alignmentMarginY = 0;#g' /opt/stax-secure-sdk/lib_nbgl/src/nbgl_layout.c && \
+        sed -i 's#keyboard->alignmentMarginY = 60;#keyboard->alignmentMarginY = 1;#g' /opt/stax-secure-sdk/lib_nbgl/src/nbgl_layout.c && \
         make BOLOS_SDK=\$STAX_SDK DEBUG=1 \
     "
 ```
