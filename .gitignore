@@ -1,0 +1,6 @@
+# Compilation files of the application
+build/
+
+# Legacy compilation output
+bin/
+debug/
