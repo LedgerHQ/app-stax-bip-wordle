@@ -62,9 +62,8 @@ void ui_menu_main(void) {
 }
 
 // 'About' menu
-
 static const char* const INFO_TYPES[] = {"Version", "Developer"};
-static const char* const INFO_CONTENTS[] = {APPVERSION, "Ledger HK7"};
+static const char* const INFO_CONTENTS[] = {APPVERSION, "Ledger HK7 - Game on Stax"};
 
 static bool nav_callback(uint8_t page, nbgl_pageContent_t* content) {
     UNUSED(page);

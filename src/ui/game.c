@@ -19,6 +19,10 @@
 uint32_t wordIdx = 0;
 static nbgl_obj_t **screenChildren;
 
+char userWord[9];
+int userWordIdx = 0;
+int userTries = 0;
+
 void pickWord() {
   wordIdx = cx_rng_u32_range(0, WORDS_NB);
   PRINTF("Word to find: '%s' idx:%u length:%u\n", wordList[wordIdx], wordIdx,
@@ -29,9 +33,18 @@ static void selectLetterCb(char letter) {
   if (letter == 0x08) {
     // BACK BUTTON
     PRINTF("%s: BACK BUTTON\n", __func__);
+    if (userWordIdx > 0) {
+      --userWordIdx;
+      userWord[userWordIdx] = '\0';
+    }
   } else {
-    PRINTF("%s: '%c'/0x%x\n", __func__, letter, letter);
+    PRINTF("%s: '%c'\n", __func__, letter);
+    if (userWordIdx < sizeof(userWord) - 1) {
+      userWord[userWordIdx] = letter;
+      ++userWordIdx;
+    }
   }
+  PRINTF("User word '%s'\n", userWord);
 
   // DEBUG: pick a new word of each letter selected
   pickWord();
@@ -39,6 +52,11 @@ static void selectLetterCb(char letter) {
 
 void onStart(void) {
   PRINTF("%s\n", __func__);
+
+  // Reset user entry
+  memset(userWord, '\0', sizeof(userWord));
+  userWordIdx = 0;
+  userTries = 0;
 
   nbgl_screenSet(&screenChildren, 1, NULL, NULL);
 
