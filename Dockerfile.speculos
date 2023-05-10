@@ -1,0 +1,11 @@
+# This Dockerfile extends the official speculos image to add Qt support
+# Will be contributed upstream
+FROM ghcr.io/ledgerhq/speculos
+
+RUN apt-get update && apt-get install -qy \
+    libgl1 \
+    qtwayland5 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/
+
+RUN pip install pyqt5

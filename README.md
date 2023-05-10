@@ -1,5 +1,27 @@
 # BIP Wordle game for Stax
 
+## Getting started using Docker Compose
+
+```shell
+# Build containers
+docker compose build
+# Build the app
+docker compose run builder
+# Lauch the simulator
+docker compose run speculos
+```
+
+### Environment
+
+You might need the following environement variable:
+
+- `UID=$(id -u)` (only required if your `uid` is not 1000)
+- `GID=$(id -g)` (only required if your `gid` is not 1000)
+- `XDG_RUNTIME_DIR` (should already be set)
+- `WAYLAND_DISPLAY` (should already be set)
+
+## Manual installation
+
 ```shell
 # Get speculos:
 git clone https://github.com/LedgerHQ/speculos
