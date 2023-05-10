@@ -16,6 +16,7 @@
 
 // Index of the word to find in the wordList, generated randomly.
 uint32_t wordIdx = 0;
+static nbgl_obj_t **screenChildren;
 
 void pickWord() {
   wordIdx = cx_rng_u32_range(0, WORDS_NB);
@@ -37,6 +38,10 @@ static void selectLetterCb(char letter) {
 
 void onStart(void) {
   PRINTF("%s\n", __func__);
+
+  nbgl_screenSet(&screenChildren, 1, NULL, NULL);
+  screenChildren[0] = (nbgl_obj_t*)createSet(6);
+
   nbgl_layoutDescription_t layoutDescription = {};
   nbgl_layout_t *layout = nbgl_layoutGet(&layoutDescription);
 
@@ -48,4 +53,7 @@ void onStart(void) {
   };
   nbgl_layoutAddKeyboard(layout, &kbdInfo);
   nbgl_layoutDraw(layout);
+
+  nbgl_screenRedraw();
+  nbgl_refresh();
 }
