@@ -10,6 +10,7 @@
  *********************/
 #include "nbgl_debug.h"
 #include "nbgl_layout.h"
+#include "nbgl_touch.h"
 #include "lcx_rng.h"
 #include "words.h"
 #include "string.h"
@@ -40,7 +41,8 @@ void onStart(void) {
   PRINTF("%s\n", __func__);
 
   nbgl_screenSet(&screenChildren, 1, NULL, NULL);
-  screenChildren[0] = (nbgl_obj_t*)createSet(6);
+
+  screenChildren[0] = (nbgl_obj_t*)createGame(6);
 
   nbgl_layoutDescription_t layoutDescription = {};
   nbgl_layout_t *layout = nbgl_layoutGet(&layoutDescription);
