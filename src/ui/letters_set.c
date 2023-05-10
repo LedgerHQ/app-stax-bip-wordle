@@ -20,7 +20,7 @@ static nbgl_button_t* createButton(char *letter, int x, int y) {
   backButton->width = 40;
   backButton->height = 40;
   backButton->radius = 1;
-  backButton->alignmentMarginX = 5;
+  backButton->alignmentMarginX = 8;
   //backButton->alignmentMarginY = y;
 
 
@@ -49,7 +49,7 @@ static nbgl_container_t* createCharLine(int index, int nbLetters) {
   nbgl_container_t *container = nbgl_objPoolGet(CONTAINER, 0);
 
   container->width = SCREEN_WIDTH;
-  //container->height = 40;
+  container->height = 40;
   container->alignment = TOP_LEFT;
   container->layout = HORIZONTAL;
   container->touchMask = (1<<TOUCHED);
@@ -70,8 +70,8 @@ nbgl_container_t* createSet(int nbTries) {
   nbgl_container_t *container = nbgl_objPoolGet(CONTAINER, 0);
 
   container->width = SCREEN_WIDTH;
-  container->height = 200;
-  container->alignment = TOP_LEFT;
+  container->height = 44 * nbTries;
+  container->alignment = TOP_MIDDLE;
   container->layout = VERTICAL;
   container->touchMask = (1<<TOUCHED);
   container->nbChildren = nbTries;
@@ -80,8 +80,38 @@ nbgl_container_t* createSet(int nbTries) {
   int i;
   for (i = 0; i < nbTries; ++i)
   {
-    container->children[i] = (nbgl_obj_t*)createCharLine(i, 8);
+    container->children[i] = (nbgl_obj_t*)createCharLine(i, 5);
   }
+
+  return container;
+}
+
+nbgl_container_t* createGame(int nbTries) {
+  nbgl_container_t *container = nbgl_objPoolGet(CONTAINER, 0);
+
+  container->width = SCREEN_WIDTH;
+  container->height = SCREEN_HEIGHT;
+  container->alignment = TOP_MIDDLE;
+  //container->layout = VERTICAL;
+  container->touchMask = (1<<TOUCHED);
+  container->nbChildren = 2;
+  container->children = (nbgl_obj_t**)nbgl_containerPoolGet(container->nbChildren, 0);
+  
+  container->children[0] = (nbgl_obj_t*)createSet(nbTries);
+
+  nbgl_button_t *backButton = nbgl_objPoolGet(BUTTON, 0);
+  backButton->text = "Guess";
+  backButton->innerColor = BLACK;
+  backButton->borderColor = BLACK;
+  backButton->foregroundColor = WHITE;
+  
+  backButton->width = 128;
+  backButton->height = 64;
+  backButton->radius = 4;
+  backButton->alignment = CENTER;
+  //backButton->alignmentMarginY = 300;
+  
+  container->children[1] = (nbgl_obj_t*)backButton;
 
   return container;
 }
