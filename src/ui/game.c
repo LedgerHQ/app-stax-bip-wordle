@@ -44,10 +44,10 @@ void touchCallback(nbgl_obj_t *obj, nbgl_touchType_t eventType) {
       //counter[0]++;
                 nbgl_redrawObject((nbgl_obj_t *)text1, NULL ,true);
 
-  nbgl_screenRedraw();
-      nbgl_refreshSpecial(BLACK_AND_WHITE_FAST_REFRESH);
+  //nbgl_screenRedraw();
+  //nbgl_refreshSpecial(BLACK_AND_WHITE_FAST_REFRESH);
 
-  //nbgl_refresh();
+  nbgl_refresh();
 
     return;
 }
@@ -93,8 +93,8 @@ void onStart(void) {
   image->alignment = BOTTOM_LEFT;
   image->width = C_cookie.width;
   image->height = C_cookie.height;
-  image->alignmentMarginX = 200;
-    image->alignmentMarginY = 100;
+  image->alignmentMarginX = 150;
+    image->alignmentMarginY = 300;
       image->touchMask = (1<<TOUCHED);
   screenChildren[1] = image;
 
