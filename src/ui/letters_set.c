@@ -94,24 +94,24 @@ nbgl_container_t* createGame(int nbTries) {
   container->alignment = TOP_MIDDLE;
   //container->layout = VERTICAL;
   container->touchMask = (1<<TOUCHED);
-  container->nbChildren = 2;
+  container->nbChildren = 3; // letter set conatiner + guess button + keyboard
   container->children = (nbgl_obj_t**)nbgl_containerPoolGet(container->nbChildren, 0);
   
   container->children[0] = (nbgl_obj_t*)createSet(nbTries);
 
-  nbgl_button_t *backButton = nbgl_objPoolGet(BUTTON, 0);
-  backButton->text = "Guess";
-  backButton->innerColor = BLACK;
-  backButton->borderColor = BLACK;
-  backButton->foregroundColor = WHITE;
+  nbgl_button_t *guessButton = nbgl_objPoolGet(BUTTON, 0);
+  guessButton->text = "Guess";
+  guessButton->innerColor = BLACK;
+  guessButton->borderColor = BLACK;
+  guessButton->foregroundColor = WHITE;
   
-  backButton->width = 128;
-  backButton->height = 64;
-  backButton->radius = 4;
-  backButton->alignment = CENTER;
-  //backButton->alignmentMarginY = 300;
+  guessButton->width = 128;
+  guessButton->height = 64;
+  guessButton->radius = 4;
+  guessButton->alignment = CENTER;
+  //guessButton->alignmentMarginY = 300;
   
-  container->children[1] = (nbgl_obj_t*)backButton;
+  container->children[1] = (nbgl_obj_t*)guessButton;
 
   return container;
 }

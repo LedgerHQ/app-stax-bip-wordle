@@ -44,17 +44,16 @@ void onStart(void) {
 
   screenChildren[0] = (nbgl_obj_t*)createGame(6);
 
-  nbgl_layoutDescription_t layoutDescription = {};
-  nbgl_layout_t *layout = nbgl_layoutGet(&layoutDescription);
-
-  nbgl_layoutKbd_t kbdInfo = {
-    .lettersOnly = true,
-    .casing = LOCKED_UPPER_CASE,
-    .mode = MODE_LETTERS,
-    .callback = selectLetterCb,
-  };
-  nbgl_layoutAddKeyboard(layout, &kbdInfo);
-  nbgl_layoutDraw(layout);
+  // create keyboard
+  nbgl_keyboard_t* keyboard = nbgl_objPoolGet(KEYBOARD, 0);
+  keyboard->alignmentMarginY = 1;
+  keyboard->alignment = BOTTOM_MIDDLE;
+  keyboard->borderColor = LIGHT_GRAY;
+  keyboard->lettersOnly = true;
+  keyboard->casing = LOCKED_UPPER_CASE;
+  keyboard->mode = MODE_LETTERS;
+  keyboard->callback = selectLetterCb;
+  ((nbgl_container_t *)screenChildren[0])->children[2] = (nbgl_obj_t*)keyboard;
 
   nbgl_screenRedraw();
   nbgl_refresh();
