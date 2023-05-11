@@ -59,7 +59,8 @@ void app_quit(void) {
 }
 
 void ui_menu_main(void) {
-  nbgl_useCaseHomeExt("BIP Wordle", &C_icon_32, "Wordle game on BIP-39\ndictionnary", true, "Start", onStart, ui_menu_about, app_quit);
+    PRINTF("app_main()\\\\n");
+  nbgl_useCaseHomeExt("BIP Wordle", &C_icon_32, "Wordle game on BIP-39\ndictionnary", true, "Start", preambule, onStart, app_quit);
 }
 
 // 'About' menu

@@ -10,4 +10,10 @@ void ui_menu_main(void);
  */
 void ui_menu_about(void);
 
+
+/**
+ * Show the preambule story-telling
+ */
+void preambule(void);
+
 void onStart(void);
