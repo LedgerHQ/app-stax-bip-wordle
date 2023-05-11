@@ -27,7 +27,6 @@ static nbgl_container_t* createCharLine(int index, int nbLetters) {
 
   container->height = 40;
   container->layout = HORIZONTAL;
-  container->touchMask = (1<<TOUCHED);
   container->nbChildren = nbLetters;
   container->children = (nbgl_obj_t**)nbgl_containerPoolGet(container->nbChildren, 0);
   container->alignment = TOP_LEFT;
@@ -51,7 +50,6 @@ nbgl_container_t* createSet(int nbTries, int nbLetters) {
   container->height = 60 * nbTries;
   container->alignment = TOP_MIDDLE;
   container->layout = VERTICAL;
-  container->touchMask = (1<<TOUCHED);
   container->nbChildren = nbTries;
   container->children = (nbgl_obj_t**)nbgl_containerPoolGet(container->nbChildren, 0);
 
@@ -70,11 +68,9 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   container->width = SCREEN_WIDTH;
   container->height = SCREEN_HEIGHT;
   container->alignment = TOP_MIDDLE;
-  //container->layout = VERTICAL;
-  container->touchMask = (1<<TOUCHED);
-  container->nbChildren = 4; // letter set conatiner + guess button + score button + keyboard
+  container->nbChildren = 5; // letter set conatiner + guess button + score button + exit header + keyboard
   container->children = (nbgl_obj_t**)nbgl_containerPoolGet(container->nbChildren, 0);
-  
+
   container->children[0] = (nbgl_obj_t*)createSet(nbTries, nbLetters);
 
   nbgl_button_t *guessButton = nbgl_objPoolGet(BUTTON, 0);
@@ -102,8 +98,18 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   scoreButton->alignmentMarginX = 22;
   scoreButton->alignmentMarginY = 405;
   container->children[2] = (nbgl_obj_t*)scoreButton;
-
   snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, userScore);
+
+  nbgl_text_area_t *exitHeader = (nbgl_text_area_t *)nbgl_objPoolGet(TEXT_AREA,0);
+  exitHeader->textColor = BLACK;
+  exitHeader->text = "BIP Wordle";
+  exitHeader->fontId = BAGL_FONT_INTER_SEMIBOLD_24px;
+  exitHeader->height = 80;
+  exitHeader->alignment = TOP_LEFT;
+  exitHeader->alignmentMarginX = 140;
+  exitHeader->width = SCREEN_WIDTH - exitHeader->alignmentMarginX;
+  exitHeader->touchMask = (1<<TOUCHED);
+  container->children[3] = (nbgl_obj_t*)exitHeader;
 
   return container;
 }

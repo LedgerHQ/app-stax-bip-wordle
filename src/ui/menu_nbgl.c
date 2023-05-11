@@ -53,8 +53,9 @@
  **********************/
 
 void app_quit(void) {
+    PRINTF("EXIT\n");
     // exit app here
-    os_sched_exit(-1);
+    os_sched_exit(0);
 }
 
 void ui_menu_main(void) {

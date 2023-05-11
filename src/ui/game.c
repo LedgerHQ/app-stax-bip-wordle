@@ -27,6 +27,8 @@ int userTries = 0;
 int userWordIdx = 0;
 char userWord[nbLetters + 1];
 
+void app_quit();
+
 void pickWord() {
   wordIdx = cx_rng_u32_range(0, WORDS_NB);
   PRINTF("Word to find: '%s' idx:%u length:%u\n", wordList[wordIdx], wordIdx,
@@ -84,7 +86,7 @@ void onStart(void) {
   userWordIdx = 0;
   userTries = 0;
 
-  nbgl_screenSet(&screenChildren, 1, NULL, NULL);
+  nbgl_screenSet(&screenChildren, 1, NULL, app_quit);
 
   screenChildren[0] = (nbgl_obj_t*)createGame(nbTries, nbLetters);
 
@@ -97,7 +99,7 @@ void onStart(void) {
   keyboard->casing = LOCKED_UPPER_CASE;
   keyboard->mode = MODE_LETTERS;
   keyboard->callback = selectLetterCb;
-  ((nbgl_container_t *)screenChildren[0])->children[3] = (nbgl_obj_t*)keyboard;
+  ((nbgl_container_t *)screenChildren[0])->children[4] = (nbgl_obj_t*)keyboard;
 
   nbgl_screenRedraw();
   nbgl_refresh();
