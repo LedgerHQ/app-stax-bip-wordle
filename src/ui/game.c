@@ -57,6 +57,7 @@ void onGuessPress() {
     userWordIdx = 0;
     userTries++;
   }
+  nbgl_screenRedraw();
 }
 
 static void selectLetterCb(char letter) {
@@ -96,10 +97,10 @@ static void selectLetterCb(char letter) {
     ++userWordIdx;
   PRINTF("User word '%s'\n", userWord);
 
-  if (strlen(userWord) == 5) {
-     PRINTF("User word finished\n");
-     onGuessPress();
-  }
+  // if (strlen(userWord) == 5) {
+  //    PRINTF("User word finished\n");
+  //    onGuessPress();
+  // }
 
   nbgl_screenRedraw();
 }
@@ -113,12 +114,13 @@ static void touchCallback(nbgl_obj_t *obj, nbgl_touchType_t eventType) {
   if (obj == screen->children[guessIdx]) {
     PRINTF("Guess\n");
 
+    onGuessPress();
     // TODO: If correct...
-    if (userScore < 24) {
-      ++userScore;
-      snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, userScore);
-      nbgl_screenRedraw();
-    }
+    // if (userScore < 24) {
+    //   ++userScore;
+    //   snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, userScore);
+    //   nbgl_screenRedraw();
+    // }
   } else if (obj == screen->children[headerIdx]) {
     PRINTF("Exit header\n");
     app_quit();
