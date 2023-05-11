@@ -97,7 +97,7 @@ void onStart(void) {
   keyboard->casing = LOCKED_UPPER_CASE;
   keyboard->mode = MODE_LETTERS;
   keyboard->callback = selectLetterCb;
-  ((nbgl_container_t *)screenChildren[0])->children[2] = (nbgl_obj_t*)keyboard;
+  ((nbgl_container_t *)screenChildren[0])->children[3] = (nbgl_obj_t*)keyboard;
 
   nbgl_screenRedraw();
   nbgl_refresh();
