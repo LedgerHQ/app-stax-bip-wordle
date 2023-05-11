@@ -10,7 +10,6 @@
 // #include "os.h"
 // #include "io.h"
 
-
 static nbgl_button_t* createButton(char *letter, int x, int y) {
   nbgl_button_t *backButton = nbgl_objPoolGet(BUTTON, 0);
   backButton->text = letter;
@@ -66,7 +65,7 @@ static nbgl_container_t* createCharLine(int index, int nbLetters) {
   return container;
 }
 
-nbgl_container_t* createSet(int nbTries) {
+nbgl_container_t* createSet(int nbTries, int nbLetters) {
   nbgl_container_t *container = nbgl_objPoolGet(CONTAINER, 0);
 
   container->width = SCREEN_WIDTH;
@@ -80,13 +79,13 @@ nbgl_container_t* createSet(int nbTries) {
   int i;
   for (i = 0; i < nbTries; ++i)
   {
-    container->children[i] = (nbgl_obj_t*)createCharLine(i, 5);
+    container->children[i] = (nbgl_obj_t*)createCharLine(i, nbLetters);
   }
 
   return container;
 }
 
-nbgl_container_t* createGame(int nbTries) {
+nbgl_container_t* createGame(int nbTries, int nbLetters) {
   nbgl_container_t *container = nbgl_objPoolGet(CONTAINER, 0);
 
   container->width = SCREEN_WIDTH;
@@ -97,7 +96,7 @@ nbgl_container_t* createGame(int nbTries) {
   container->nbChildren = 3; // letter set conatiner + guess button + keyboard
   container->children = (nbgl_obj_t**)nbgl_containerPoolGet(container->nbChildren, 0);
   
-  container->children[0] = (nbgl_obj_t*)createSet(nbTries);
+  container->children[0] = (nbgl_obj_t*)createSet(nbTries, nbLetters);
 
   nbgl_button_t *guessButton = nbgl_objPoolGet(BUTTON, 0);
   guessButton->text = "Guess";

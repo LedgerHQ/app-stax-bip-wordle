@@ -18,6 +18,8 @@
 // Index of the word to find in the wordList, generated randomly.
 uint32_t wordIdx = 0;
 static nbgl_obj_t **screenChildren;
+const int nbTries = 6;
+const int nbLetters = 5;
 
 char userWord[9];
 int userWordIdx = 0;
@@ -60,7 +62,7 @@ void onStart(void) {
 
   nbgl_screenSet(&screenChildren, 1, NULL, NULL);
 
-  screenChildren[0] = (nbgl_obj_t*)createGame(6);
+  screenChildren[0] = (nbgl_obj_t*)createGame(nbTries, nbLetters);
 
   // create keyboard
   nbgl_keyboard_t* keyboard = nbgl_objPoolGet(KEYBOARD, 0);
