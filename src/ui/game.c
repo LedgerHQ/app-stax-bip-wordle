@@ -40,23 +40,30 @@ void pickWord() {
 }
 
 void onGuessPress() {
+  nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
   if (userWordIdx < 4) {
     return;
   }
   if (compareWords(screenChildren, userTries, userWord, wordList[wordIdx]) == true) {
     PRINTF("finished\n");
     //WIN
-    return;
+    resetGameSet(screen);
+    userTries = 0;
+    pickWord();
+    if (userScore < 24) {
+      ++userScore;
+      snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, userScore);
+    }
   } else {
     if (userTries >= 5) {
       PRINTF("lost\n");
       //LOST
       return;
     }
-    memset(userWord, '\0', sizeof(userWord));
-    userWordIdx = 0;
     userTries++;
   }
+  memset(userWord, '\0', sizeof(userWord));
+  userWordIdx = 0;
   nbgl_screenRedraw();
 }
 

@@ -12,6 +12,35 @@ char userScoreStr[8] = {0}; // "xx / 24"
 const int guessIdx = 1;
 const int headerIdx = 3;
 
+void resetGameSet(nbgl_container_t* screen) {
+  nbgl_container_t* letterSet = screen->children[0];
+  int lineNb = 0;
+
+  while (lineNb < 6) {
+    nbgl_container_t* letterLine = letterSet->children[lineNb];
+    int letterNb = 0;
+
+    while (letterNb < 5) {
+      nbgl_button_t* letterButton = letterLine->children[letterNb];
+      
+      letterButton->text = " ";
+      letterButton->innerColor = WHITE;
+      letterButton->borderColor = LIGHT_GRAY;
+      letterButton->foregroundColor = BLACK;
+      letterButton->width = 40;
+      letterButton->height = 40;
+      letterButton->radius = 1;
+      letterButton->alignmentMarginX = 8;
+      letterButton->fontId = BAGL_FONT_INTER_REGULAR_24px;
+
+      ++letterNb;
+    }
+    ++lineNb;
+  }
+
+  nbgl_screenRedraw();
+}
+
 static nbgl_button_t* createButton() {
   nbgl_button_t *backButton = nbgl_objPoolGet(BUTTON, 0);
   backButton->text = " ";

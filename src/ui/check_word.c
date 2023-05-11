@@ -56,10 +56,10 @@ bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, 
       letterButton->borderColor = BLACK;
       letterButton->fontId = BAGL_FONT_INTER_SEMIBOLD_24px;
       //letterButton->innerColor = LIGHT_GRAY;
-      nbgl_screenRedraw();
     }
     ++i;
   }
+  nbgl_screenRedraw();
   if (strcmp(guessWord, wordToFind) == 0) {
     return true;
   }
