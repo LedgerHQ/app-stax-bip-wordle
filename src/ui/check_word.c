@@ -40,7 +40,6 @@ bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, 
       letterButton->innerColor = BLACK;
       letterButton->foregroundColor = WHITE;
       letterButton->radius = 0;
-      nbgl_screenRedraw();
     } 
     ++i;
   }

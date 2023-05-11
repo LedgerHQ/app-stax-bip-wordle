@@ -108,8 +108,9 @@ static void selectLetterCb(char letter) {
   //    PRINTF("User word finished\n");
   //    onGuessPress();
   // }
-
-  nbgl_screenRedraw();
+  nbgl_redrawObject((nbgl_obj_t *)letterButton, NULL, false);
+  nbgl_refresh();
+  //nbgl_screenRedraw();
 }
 
 // function called when any of the container is touched
