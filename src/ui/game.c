@@ -33,6 +33,26 @@ void pickWord() {
       strlen(wordList[wordIdx]));
 }
 
+void onGuessPress() {
+  if (userWordIdx < 4) {
+    return;
+  }
+  if (compareWords(screenChildren, userTries, userWord, wordList[wordIdx]) == true) {
+    PRINTF("finished\n");
+    //WIN
+    return;
+  } else {
+    if (userTries >= 5) {
+      PRINTF("lost\n");
+      //LOST
+      return;
+    }
+    memset(userWord, '\0', sizeof(userWord));
+    userWordIdx = 0;
+    userTries++;
+  }
+}
+
 static void selectLetterCb(char letter) {
   // Get word line
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
@@ -70,14 +90,18 @@ static void selectLetterCb(char letter) {
     ++userWordIdx;
   PRINTF("User word '%s'\n", userWord);
 
-  // DEBUG: pick a new word of each letter selected
-  pickWord();
+  if (strlen(userWord) == 5) {
+     PRINTF("User word finished\n");
+     onGuessPress();
+  }
 
   nbgl_screenRedraw();
 }
 
 void onStart(void) {
   PRINTF("%s\n", __func__);
+
+  pickWord();
 
   // Reset user entry
   memset(userWord, '\0', sizeof(userWord));

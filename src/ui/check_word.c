@@ -10,7 +10,7 @@
 // #include "os.h"
 // #include "io.h"
 
-int strpos(const char *str, char search) {
+static int strpos(const char *str, char search) {
 	int i = 0;
 	if (str != NULL) {
 		while (str[i]) {
@@ -31,9 +31,6 @@ bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, 
   int i = 0;
   int pos = -1;
   PRINTF("guess %s, to find %s\n", guessWord, wordToFind);
-  if (strcmp(guessWord, wordToFind) == 0) {
-    return true;
-  }
   while (guessWord[i]) {
     if (guessWord[i] == wordToFind[i]) {
       //Character found and position correct
@@ -42,6 +39,7 @@ bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, 
       nbgl_button_t* letterButton = letterLine->children[i];
       letterButton->innerColor = BLACK;
       letterButton->foregroundColor = WHITE;
+      letterButton->radius = 0;
       nbgl_screenRedraw();
     } 
     ++i;
@@ -57,10 +55,13 @@ bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, 
       nbgl_button_t* letterButton = letterLine->children[i];
       letterButton->borderColor = BLACK;
       letterButton->fontId = BAGL_FONT_INTER_SEMIBOLD_24px;
-      //letterButton->foregroundColor = WHITE;
+      //letterButton->innerColor = LIGHT_GRAY;
       nbgl_screenRedraw();
     }
     ++i;
+  }
+  if (strcmp(guessWord, wordToFind) == 0) {
+    return true;
   }
   return false;
 }
