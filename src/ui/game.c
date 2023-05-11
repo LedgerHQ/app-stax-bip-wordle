@@ -74,7 +74,6 @@ static void selectLetterCb(char letter) {
   pickWord();
 
   nbgl_screenRedraw();
-  nbgl_refresh();
 }
 
 void onStart(void) {
