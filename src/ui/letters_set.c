@@ -10,9 +10,9 @@
 // #include "os.h"
 // #include "io.h"
 
-static nbgl_button_t* createButton(char *letter, int x, int y) {
+static nbgl_button_t* createButton() {
   nbgl_button_t *backButton = nbgl_objPoolGet(BUTTON, 0);
-  backButton->text = letter;
+  backButton->text = " ";
   backButton->innerColor = WHITE;
   backButton->borderColor = LIGHT_GRAY;
   backButton->foregroundColor = BLACK;
@@ -59,7 +59,7 @@ static nbgl_container_t* createCharLine(int index, int nbLetters) {
   int i;
   for (i = 0; i < nbLetters; ++i)
   {
-    container->children[i] = (nbgl_obj_t*)createButton("B", 1, 1);
+    container->children[i] = (nbgl_obj_t*)createButton();
   }
 
   return container;
