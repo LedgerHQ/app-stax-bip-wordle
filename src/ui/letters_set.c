@@ -5,8 +5,12 @@
 #include "nbgl_use_case.h"
 
 int userScore = 0;
+//const char * const scoreFmt = "%2d / 24";
 #define SCORE_FMT "%2d / 24"
 char userScoreStr[8] = {0}; // "xx / 24"
+
+const int guessIdx = 1;
+const int headerIdx = 3;
 
 static nbgl_button_t* createButton() {
   nbgl_button_t *backButton = nbgl_objPoolGet(BUTTON, 0);
@@ -84,7 +88,8 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   guessButton->alignment = TOP_LEFT;
   guessButton->alignmentMarginX = 204;
   guessButton->alignmentMarginY = 405;
-  container->children[1] = (nbgl_obj_t*)guessButton;
+  guessButton->touchMask = (1<<TOUCHED);
+  container->children[guessIdx] = (nbgl_obj_t*)guessButton;
 
   nbgl_button_t *scoreButton = nbgl_objPoolGet(BUTTON, 0);
   scoreButton->text = userScoreStr;
@@ -109,7 +114,7 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   exitHeader->alignmentMarginX = 140;
   exitHeader->width = SCREEN_WIDTH - exitHeader->alignmentMarginX;
   exitHeader->touchMask = (1<<TOUCHED);
-  container->children[3] = (nbgl_obj_t*)exitHeader;
+  container->children[headerIdx] = (nbgl_obj_t*)exitHeader;
 
   return container;
 }
