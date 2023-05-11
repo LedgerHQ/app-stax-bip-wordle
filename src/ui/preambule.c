@@ -57,17 +57,19 @@ static const char STORY_1[] =
     "but I need your help!"
 ;
 static const char STORY_2[] = 
-    "If you accept, I’ll tell\n"
-    "you about the risks of\n"
-    "today’s world and the\n"
-    "importance of proper money\n"
+    "If you accept, I'll\n"
+    "tell you about the risks\n"
+    "of today's world and the\n"
+    "importance of proper key\n"
     "storage.\n"
     "\n"
     "Oh... Why did I leave my\n"
-    "funds at SCB, that untrustworthy bank..\n"
-    "Anyway, this hacker, hear what\\n"
-    "he told me:\n"
-    "All your 24 words are belong to us!"
+    "funds at SCB, that\n"
+    "untrustworthy bank..\n"
+    "Anyway, this hacker, here\n"
+    "is what he told me:\n"
+    "All your 24 words belong\n"
+    "to us now!"
 
 ;
 // static const char STORY_2[] = 
@@ -76,9 +78,9 @@ static const char STORY_2[] =
     // "All your 24 words are belong to us!\n"
 // ;
 static const char STORY_3[] = 
-    "You know what it means, right? It’s my secret recovery phrase that I need you to find!"
-    "Ok, I’ll assist you along this quest, just tap the “info” icon if needed."
-    "Guess each word in 6 tries. Each guess must be a valid BIP-39 word. Tiles shade change to show guess proximity. Good luck!"
+    "You know what it means,\nright? It's my secret\nrecovery phrase that I need\nyou to find!\n"
+    "Ok, I'll assist you along this\nquest, just tap the info icon\nif needed. "
+    "Guess each word in\n6 tries. Each guess must be a\nvalid BIP-39 word. Tiles shade\nchange to show guess\nproximity. Good luck!"
 ;
 
 static const char SKIP[] = "Skip the story, let's play !";
