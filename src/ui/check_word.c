@@ -58,7 +58,8 @@ bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, 
     }
     ++i;
   }
-  nbgl_screenRedraw();
+  nbgl_redrawObject((nbgl_obj_t *)letterLine, NULL, false);
+  //nbgl_screenRedraw();
   if (strcmp(guessWord, wordToFind) == 0) {
     return true;
   }

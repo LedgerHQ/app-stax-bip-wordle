@@ -41,7 +41,7 @@ void pickWord() {
 
 void onGuessPress() {
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
-  if (userWordIdx < 4) {
+  if (userWordIdx < 5) {
     return;
   }
   if (compareWords(screenChildren, userTries, userWord, wordList[wordIdx]) == true) {
