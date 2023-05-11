@@ -19,7 +19,7 @@
 uint32_t wordIdx = 0;
 static nbgl_obj_t **screenChildren;
 static const int nbTries = 6;
-static const int nbLetters = 5;
+static const int nbLetters = WORD_MAX_LENGTH;
 
 char userLetters[nbTries][nbLetters][2] = {0};
 
