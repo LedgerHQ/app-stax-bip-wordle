@@ -17,3 +17,13 @@ void ui_menu_about(void);
 void preambule(void);
 
 void onStart(void);
+
+/**
+ * Victory screen
+ */
+void win(void);
+
+/**
+ * Defeat screen
+ */
+void lost(void);
