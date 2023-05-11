@@ -58,6 +58,7 @@ void onGuessPress() {
     if (userTries >= 5) {
       PRINTF("lost\n");
       //LOST
+      lost();
       return;
     }
     userTries++;
