@@ -2,10 +2,7 @@ version: "3.7"
 
 services:
   builder:
-    build:
-      context: .
-      dockerfile: Dockerfile.builder
-    image: stax-builder:wordle
+    image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - .:/app
