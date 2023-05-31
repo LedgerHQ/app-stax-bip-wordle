@@ -3,6 +3,7 @@
  *********************/
 #include "nbgl_debug.h"
 #include "nbgl_use_case.h"
+#include "check_word_list.h"
 // #include "nbgl_touch.h"
 // #include "lcx_rng.h"
 // #include "glyphs.h"
@@ -21,6 +22,16 @@ static int strpos(const char *str, char search) {
 		}
 	}
 	return -1;
+}
+
+bool checkIfCorrectWord(char *guessWord) {
+  int i;
+  for(i = 0; i < CHECK_WORDS_NB; i++) {
+    if(strcmp(N_checkWordList[i], guessWord) == 0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, char *wordToFind) {
