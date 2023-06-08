@@ -29,6 +29,8 @@ char userWord[nbLetters + 1];
 
 extern const int guessIdx;
 extern const int headerIdx;
+extern const int errorIdx;
+
 extern int userScore;
 extern char userScoreStr[8];
 #define SCORE_FMT "%2d / 24"
@@ -41,9 +43,19 @@ void pickWord() {
 
 void onGuessPress() {
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
+  nbgl_text_area_t* errorText = screen->children[errorIdx];
+
   if (userWordIdx < 5) {
     return;
   }
+
+  if (checkIfCorrectWord(userWord) != true) {
+    PRINTF("incorrect\n");
+    errorText->text = "Unknown word";
+    nbgl_redrawObject((nbgl_obj_t *)errorText, NULL, false);
+    return;
+  };
+
   if (compareWords(screenChildren, userTries, userWord, wordList[wordIdx]) == true) {
     PRINTF("finished\n");
     //WIN
@@ -63,9 +75,12 @@ void onGuessPress() {
     }
     userTries++;
   }
+
   memset(userWord, '\0', sizeof(userWord));
   userWordIdx = 0;
   nbgl_screenRedraw();
+  PRINTF("playsound\n");
+  //io_seproxyhal_play_tune(TUNE_LEDGER_MOMENT);
 }
 
 static void selectLetterCb(char letter) {
@@ -73,7 +88,14 @@ static void selectLetterCb(char letter) {
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
   nbgl_container_t* letterSet = screen->children[0];
   nbgl_container_t* letterLine = letterSet->children[userTries];
+  nbgl_text_area_t* errorText = screen->children[errorIdx];
   bool postInc = false;
+  
+  if (strcmp(errorText->text, "") != 0) {
+    PRINTF("cleaning error\n");
+    errorText->text = "";
+    nbgl_redrawObject((nbgl_obj_t *)errorText, NULL, false);
+  }
 
   if (letter == 0x08) {
     // BACK BUTTON
@@ -105,10 +127,6 @@ static void selectLetterCb(char letter) {
     ++userWordIdx;
   PRINTF("User word '%s'\n", userWord);
 
-  // if (strlen(userWord) == 5) {
-  //    PRINTF("User word finished\n");
-  //    onGuessPress();
-  // }
   nbgl_redrawObject((nbgl_obj_t *)letterButton, NULL, false);
   nbgl_refresh();
   //nbgl_screenRedraw();
@@ -162,7 +180,7 @@ void onStart(void) {
   keyboard->mode = MODE_LETTERS;
   keyboard->callback = selectLetterCb;
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
-  screen->children[4] = (nbgl_obj_t*)keyboard;
+  screen->children[5] = (nbgl_obj_t*)keyboard;
 
   nbgl_screenRedraw();
   nbgl_refresh();

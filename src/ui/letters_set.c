@@ -11,6 +11,7 @@ char userScoreStr[8] = {0}; // "xx / 24"
 
 const int guessIdx = 1;
 const int headerIdx = 3;
+const int errorIdx = 4;
 
 void resetGameSet(nbgl_container_t* screen) {
   nbgl_container_t* letterSet = screen->children[0];
@@ -63,7 +64,7 @@ static nbgl_container_t* createCharLine(int index, int nbLetters) {
   container->nbChildren = nbLetters;
   container->children = (nbgl_obj_t**)nbgl_containerPoolGet(container->nbChildren, 0);
   container->alignment = TOP_LEFT;
-  container->alignmentMarginX = 84;
+  container->alignmentMarginX = 76;
   container->width = SCREEN_WIDTH - container->alignmentMarginX;
   container->alignmentMarginY = index * (40 + 12) + 80;
 
@@ -101,7 +102,7 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   container->width = SCREEN_WIDTH;
   container->height = SCREEN_HEIGHT;
   container->alignment = TOP_MIDDLE;
-  container->nbChildren = 5; // letter set conatiner + guess button + score button + exit header + keyboard
+  container->nbChildren = 6; // letter set conatiner + guess button + score button + exit header + error text + keyboard
   container->children = (nbgl_obj_t**)nbgl_containerPoolGet(container->nbChildren, 0);
 
   container->children[0] = (nbgl_obj_t*)createSet(nbTries, nbLetters);
@@ -116,7 +117,7 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   guessButton->radius = 4;
   guessButton->alignment = TOP_LEFT;
   guessButton->alignmentMarginX = 204;
-  guessButton->alignmentMarginY = 405;
+  guessButton->alignmentMarginY = 424;
   guessButton->touchMask = (1<<TOUCHED);
   container->children[guessIdx] = (nbgl_obj_t*)guessButton;
 
@@ -130,7 +131,7 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   scoreButton->radius = 4;
   scoreButton->alignment = TOP_LEFT;
   scoreButton->alignmentMarginX = 22;
-  scoreButton->alignmentMarginY = 405;
+  scoreButton->alignmentMarginY = 424;
   container->children[2] = (nbgl_obj_t*)scoreButton;
   snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, userScore);
 
@@ -144,6 +145,17 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   exitHeader->width = SCREEN_WIDTH - exitHeader->alignmentMarginX;
   exitHeader->touchMask = (1<<TOUCHED);
   container->children[headerIdx] = (nbgl_obj_t*)exitHeader;
+
+  nbgl_text_area_t *errorText = (nbgl_text_area_t *)nbgl_objPoolGet(TEXT_AREA, 0);
+  errorText->textColor = BLACK;
+  errorText->text = "";
+  errorText->fontId = BAGL_FONT_INTER_REGULAR_24px;
+  errorText->width = 174;
+  errorText->height = 32;
+  errorText->alignment = TOP_MIDDLE;
+  //errorText->alignmentMarginX = 22;
+  errorText->alignmentMarginY = 388;
+  container->children[errorIdx] = (nbgl_obj_t*)errorText;
 
   return container;
 }
