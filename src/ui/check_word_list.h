@@ -6,7 +6,7 @@
 // List of all BIP-39 words in english
 // Can not be stored as string for some reason...
 
-static const char N_checkWordList[CHECK_WORDS_NB][WORD_MAX_LENGTH + /* null char */ 1] = {
+static const char checkWordList[CHECK_WORDS_NB][WORD_MAX_LENGTH + /* null char */ 1] = {
     { 'A', 'A', 'H', 'E', 'D', '\0' },
     { 'A', 'A', 'L', 'I', 'I', '\0' },
     { 'A', 'A', 'R', 'G', 'H', '\0' },
