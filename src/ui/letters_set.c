@@ -40,6 +40,7 @@ void resetGameSet(nbgl_container_t* screen) {
   }
 
   nbgl_screenRedraw();
+  nbgl_refresh();
 }
 
 static nbgl_button_t* createButton() {

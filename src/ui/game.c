@@ -53,6 +53,7 @@ void onGuessPress() {
     PRINTF("incorrect\n");
     errorText->text = "Unknown word";
     nbgl_redrawObject((nbgl_obj_t *)errorText, NULL, false);
+    nbgl_refreshSpecial(FULL_COLOR_PARTIAL_REFRESH);
     return;
   };
 
@@ -79,11 +80,14 @@ void onGuessPress() {
   memset(userWord, '\0', sizeof(userWord));
   userWordIdx = 0;
   nbgl_screenRedraw();
+  nbgl_refreshSpecial(FULL_COLOR_PARTIAL_REFRESH);
   PRINTF("playsound\n");
   //io_seproxyhal_play_tune(TUNE_LEDGER_MOMENT);
 }
 
 static void selectLetterCb(char letter) {
+  io_seproxyhal_play_tune(TUNE_TAP_CASUAL);
+
   // Get word line
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
   nbgl_container_t* letterSet = screen->children[0];
@@ -128,7 +132,7 @@ static void selectLetterCb(char letter) {
   PRINTF("User word '%s'\n", userWord);
 
   nbgl_redrawObject((nbgl_obj_t *)letterButton, NULL, false);
-  nbgl_refresh();
+  nbgl_refreshSpecial(FULL_COLOR_PARTIAL_REFRESH);
   //nbgl_screenRedraw();
 }
 
