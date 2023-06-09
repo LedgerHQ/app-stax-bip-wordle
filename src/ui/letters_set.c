@@ -1,6 +1,7 @@
 /*********************
  *      INCLUDES
  *********************/
+#include "shared_context.h"
 #include "nbgl_debug.h"
 #include "nbgl_use_case.h"
 
@@ -10,6 +11,7 @@ int userScore = 0;
 char userScoreStr[8] = {0}; // "xx / 24"
 
 const int guessIdx = 1;
+const int scoreIdx = 2;
 const int headerIdx = 3;
 const int errorIdx = 4;
 
@@ -133,8 +135,8 @@ nbgl_container_t* createGame(int nbTries, int nbLetters) {
   scoreButton->alignment = TOP_LEFT;
   scoreButton->alignmentMarginX = 22;
   scoreButton->alignmentMarginY = 424;
-  container->children[2] = (nbgl_obj_t*)scoreButton;
-  snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, userScore);
+  container->children[scoreIdx] = (nbgl_obj_t*)scoreButton;
+  snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, N_storage.userScore);
 
   nbgl_text_area_t *exitHeader = (nbgl_text_area_t *)nbgl_objPoolGet(TEXT_AREA,0);
   exitHeader->textColor = BLACK;
