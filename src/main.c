@@ -18,6 +18,7 @@
 #include <stdint.h>  // uint*_t
 #include <string.h>  // memset, explicit_bzero
 
+
 #include "os.h"
 
 #ifdef HAVE_BAGL
@@ -30,6 +31,7 @@
 #include "io.h"
 #include "sw.h"
 #include "ui/menu.h"
+#include "shared_context.h"
 
 uint8_t G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
 io_state_e G_io_state;
@@ -41,6 +43,8 @@ global_ctx_t G_context;
 
 extern void io_init();
 extern int io_recv_command();
+
+const internalStorage_t N_storage_real;
 
 /**
  * Handle APDU command received and send back APDU response using handlers.

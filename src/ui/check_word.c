@@ -27,7 +27,7 @@ static int strpos(const char *str, char search) {
 bool checkIfCorrectWord(char *guessWord) {
   int i;
   for(i = 0; i < CHECK_WORDS_NB; i++) {
-    if(strcmp(N_checkWordList[i], guessWord) == 0) {
+    if(strcmp(checkWordList[i], guessWord) == 0) {
       return true;
     }
   }
@@ -51,6 +51,7 @@ bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, 
       letterButton->innerColor = BLACK;
       letterButton->foregroundColor = WHITE;
       letterButton->radius = 0;
+      letterButton->fontId = BAGL_FONT_INTER_SEMIBOLD_24px;
     } 
     ++i;
   }

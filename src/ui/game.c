@@ -8,12 +8,16 @@
 /*********************
  *      INCLUDES
  *********************/
+#include "shared_context.h"
 #include "nbgl_debug.h"
 #include "nbgl_layout.h"
 #include "nbgl_touch.h"
 #include "lcx_rng.h"
 #include "words.h"
 #include "string.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include "nbgl_types.h"
 
 // Index of the word to find in the wordList, generated randomly.
 uint32_t wordIdx = 0;
@@ -28,6 +32,7 @@ int userWordIdx = 0;
 char userWord[nbLetters + 1];
 
 extern const int guessIdx;
+extern const int scoreIdx;
 extern const int headerIdx;
 extern const int errorIdx;
 
@@ -43,14 +48,17 @@ void pickWord() {
 
 void onGuessPress() {
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
+  nbgl_button_t* scoreButton = screen->children[scoreIdx];
   nbgl_text_area_t* errorText = screen->children[errorIdx];
 
   if (userWordIdx < 5) {
+    io_seproxyhal_play_tune(TUNE_ERROR);
     return;
   }
 
   if (checkIfCorrectWord(userWord) != true) {
     PRINTF("incorrect\n");
+    io_seproxyhal_play_tune(TUNE_ERROR);
     errorText->text = "Unknown word";
     nbgl_redrawObject((nbgl_obj_t *)errorText, NULL, false);
     return;
@@ -58,13 +66,17 @@ void onGuessPress() {
 
   if (compareWords(screenChildren, userTries, userWord, wordList[wordIdx]) == true) {
     PRINTF("finished\n");
+    io_seproxyhal_play_tune(TUNE_SUCCESS);
     //WIN
     resetGameSet(screen);
     userTries = 0;
     pickWord();
     if (userScore < 24) {
-      ++userScore;
-      snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, userScore);
+      int newUserScore = N_storage.userScore + 1;
+      nvm_write((void*) &N_storage.userScore, (void*) &newUserScore, sizeof(int));
+      //++userScore;
+      snprintf(userScoreStr, sizeof(userScoreStr), SCORE_FMT, N_storage.userScore);
+      nbgl_redrawObject((nbgl_obj_t *)scoreButton, NULL, false);
     }
   } else {
     if (userTries >= 5) {
@@ -78,9 +90,9 @@ void onGuessPress() {
 
   memset(userWord, '\0', sizeof(userWord));
   userWordIdx = 0;
-  nbgl_screenRedraw();
+  //nbgl_screenRedraw();
   PRINTF("playsound\n");
-  //io_seproxyhal_play_tune(TUNE_LEDGER_MOMENT);
+  io_seproxyhal_play_tune(TUNE_TAP_NEXT);
 }
 
 static void selectLetterCb(char letter) {
@@ -91,6 +103,8 @@ static void selectLetterCb(char letter) {
   nbgl_text_area_t* errorText = screen->children[errorIdx];
   bool postInc = false;
   
+  io_seproxyhal_play_tune(TUNE_TAP_CASUAL);
+
   if (strcmp(errorText->text, "") != 0) {
     PRINTF("cleaning error\n");
     errorText->text = "";
@@ -128,7 +142,7 @@ static void selectLetterCb(char letter) {
   PRINTF("User word '%s'\n", userWord);
 
   nbgl_redrawObject((nbgl_obj_t *)letterButton, NULL, false);
-  nbgl_refresh();
+  //nbgl_refresh();
   //nbgl_screenRedraw();
 }
 
@@ -137,6 +151,7 @@ static void touchCallback(nbgl_obj_t *obj, nbgl_touchType_t eventType) {
   if (eventType != TOUCHED) {
     return;
   }
+  PRINTF("Touched\n");
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
   if (obj == screen->children[guessIdx]) {
     PRINTF("Guess\n");
@@ -158,6 +173,28 @@ static void touchCallback(nbgl_obj_t *obj, nbgl_touchType_t eventType) {
 
 void onStart(void) {
   PRINTF("%s\n", __func__);
+
+  if (N_storage.initialized != 0x01) {
+      PRINTF("init1\n");
+        internalStorage_t storage;
+        storage.initialized = 0x01;
+        storage.userScore = 0;
+        nvm_write((void*) &N_storage, (void*) &storage, sizeof(internalStorage_t));
+  } else {
+          PRINTF("save already init\n");
+        // internalStorage_t storage;
+        // storage.dataAllowed = 0x00;
+        // storage.initialized = 0x01;
+        // storage.userScore = 44;
+        // nvm_write((void*) &N_storage, (void*) &storage, sizeof(internalStorage_t));
+
+        // int newUserScore = 42;
+        // storage.dataAllowed = 0x00;
+        // storage.initialized = 0x01;
+        // storage.userScore = 44;
+        // nvm_write((void*) &N_storage, (void*) &storage, sizeof(internalStorage_t));
+        // nvm_write((void *) N_u2f.privateHmacKey, (void *) key, sizeof(N_u2f.privateHmacKey));
+  }
 
   pickWord();
 

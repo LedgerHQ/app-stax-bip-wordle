@@ -22,6 +22,7 @@
  *      INCLUDES
  *********************/
 
+#include "shared_context.h"
 #include "os.h"
 #include "glyphs.h"
 #include "../globals.h"
@@ -60,7 +61,7 @@ void app_quit(void) {
 
 void ui_menu_main(void) {
     PRINTF("app_main()\\\\n");
-  nbgl_useCaseHomeExt("BIP Wordle", &C_icon_32, "Wordle game on BIP-39\ndictionnary", true, "Start", preambule, onStart, app_quit);
+  nbgl_useCaseHomeExt("BIP Wordle", &C_icon_32, "Wordle game on BIP-39\ndictionnary", false, "Start", N_storage.initialized == 0x01 && N_storage.userScore > 0 ? onStart : preambule, NULL, app_quit);
 }
 
 // 'About' menu
