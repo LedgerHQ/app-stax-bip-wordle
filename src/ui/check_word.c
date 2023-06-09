@@ -71,6 +71,7 @@ bool compareWords(nbgl_obj_t **screenChildren, int lineNumber, char *guessWord, 
     ++i;
   }
   nbgl_redrawObject((nbgl_obj_t *)letterLine, NULL, false);
+  nbgl_refreshSpecial(FULL_COLOR_PARTIAL_REFRESH);
   //nbgl_screenRedraw();
   if (strcmp(guessWord, wordToFind) == 0) {
     return true;
