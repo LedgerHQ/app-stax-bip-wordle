@@ -37,4 +37,6 @@ docker pull ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest
 sudo docker run --rm -ti --user "$(id -u):$(id -g)" --privileged -v "/dev/bus/usb:/dev/bus/usb" -v "$(realpath .):/app" ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest bash -c "make BOLOS_SDK=\$STAX_SDK DEBUG=1"
 # Run the app in speculos (with venv enabled)
 ../speculos/speculos.py --model stax --ontop ./bin/app.elf
+# Or build and sideload the app on a real device (need to use root user: 0)
+sudo docker run --rm -ti --user "0:0" --privileged -v "/dev/bus/usb:/dev/bus/usb" -v "$(realpath .):/app" ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest bash -c "make BOLOS_SDK=\$STAX_SDK DEBUG=0 clean all load"
 ```

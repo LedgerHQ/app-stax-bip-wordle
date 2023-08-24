@@ -214,8 +214,8 @@ void onStart(void) {
 
   // create keyboard
   nbgl_keyboard_t* keyboard = nbgl_objPoolGet(KEYBOARD, 0);
-  keyboard->alignmentMarginY = 1;
-  keyboard->alignment = BOTTOM_MIDDLE;
+  keyboard->obj.alignmentMarginY = 1;
+  keyboard->obj.alignment = BOTTOM_MIDDLE;
   keyboard->borderColor = LIGHT_GRAY;
   keyboard->lettersOnly = true;
   keyboard->casing = LOCKED_UPPER_CASE;
