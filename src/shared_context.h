@@ -6,14 +6,14 @@
 #include <stdint.h>
 #include "os_pic.h"
 
-typedef struct internalStorage_t {
+typedef struct internal_storage_t {
     int initialized;
     int userScore;
     //int16_t words[8];
-} internalStorage_t;
+} internal_storage_t;
 
-#define N_storage (*(volatile internalStorage_t *) PIC(&N_storage_real))
+#define N_storage (*(volatile internal_storage_t *) PIC(&N_storage_real))
 
-extern const internalStorage_t N_storage_real;
+extern const internal_storage_t N_storage_real;
 
 #endif  // _SHARED_CONTEXT_H_

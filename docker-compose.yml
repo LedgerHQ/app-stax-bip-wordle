@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   builder:
-    image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
+    image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - .:/app
@@ -13,15 +13,11 @@ services:
     command: make
 
   speculos:
-    build:
-      context: .
-      dockerfile: Dockerfile.speculos
-      network: host
+    image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest
     depends_on:
       - builder
-    image: speculos:wordle
     volumes:
-      - ./bin:/speculos/apps
+      - ./bin:/apps
       - $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY
     environment:
       XDG_RUNTIME_DIR: /tmp
@@ -32,4 +28,4 @@ services:
       - "5000:5000" # api
       - "40000:40000" # apdu
       - "41000:41000" # vnc
-    command: "--model stax --apiLevel 10 --ontop ./apps/app.elf"
+    command: "speculos --model stax --apiLevel 15 --ontop /apps/app.elf"

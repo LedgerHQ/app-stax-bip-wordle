@@ -181,10 +181,10 @@ void onStart(void) {
 
   if (N_storage.initialized != 0x01) {
       PRINTF("init1\n");
-        internalStorage_t storage;
+        internal_storage_t storage;
         storage.initialized = 0x01;
         storage.userScore = 0;
-        nvm_write((void*) &N_storage, (void*) &storage, sizeof(internalStorage_t));
+        nvm_write((void*) &N_storage, (void*) &storage, sizeof(internal_storage_t));
   } else {
           PRINTF("save already init\n");
         // internalStorage_t storage;
@@ -213,7 +213,7 @@ void onStart(void) {
   screenChildren[0] = (nbgl_obj_t*)createGame(nbTries, nbLetters);
 
   // create keyboard
-  nbgl_keyboard_t* keyboard = nbgl_objPoolGet(KEYBOARD, 0);
+  nbgl_keyboard_t* keyboard = (nbgl_keyboard_t *) nbgl_objPoolGet(KEYBOARD, 0);
   keyboard->obj.alignmentMarginY = 1;
   keyboard->obj.alignment = BOTTOM_MIDDLE;
   keyboard->borderColor = LIGHT_GRAY;

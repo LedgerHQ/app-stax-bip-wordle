@@ -5,13 +5,13 @@
 #include "constants.h"
 #include "io.h"
 #include "types.h"
+#include "ux.h"
 
 /**
  * Global buffer for interactions between SE and MCU.
  */
 extern uint8_t G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
 
-#include "ux.h"
 /**
  * Global structure to perform asynchronous UX aside IO operations.
  */
