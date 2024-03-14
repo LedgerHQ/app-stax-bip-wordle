@@ -22,14 +22,14 @@ services:
     image: speculos:wordle
     volumes:
       - ./bin:/speculos/apps
-      - $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - "$HOME/.Xauthority:/root/.Xauthority:ro"
     environment:
       XDG_RUNTIME_DIR: /tmp
-      WAYLAND_DISPLAY: $WAYLAND_DISPLAY
-      QT_QPA_PLATFORM: wayland 
+      DISPLAY: $DISPLAY
     ports:
       - "1234:1234" # gdb
       - "5000:5000" # api
       - "40000:40000" # apdu
       - "41000:41000" # vnc
-    command: "--model stax --apiLevel 10 --ontop ./apps/app.elf"
+    command: "--model stax --apiLevel 15 --ontop ./apps/app.elf "

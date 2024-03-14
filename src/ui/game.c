@@ -19,6 +19,11 @@
 #include <stdint.h>
 #include "nbgl_types.h"
 
+#include "crypto/keys.h"
+#include "crypto/signing.h"
+
+#include "utils/hex.h"
+
 // Index of the word to find in the wordList, generated randomly.
 uint32_t wordIdx = 0;
 static nbgl_obj_t **screenChildren;
@@ -46,10 +51,141 @@ void pickWord() {
       strlen(wordList[wordIdx]));
 }
 
+#define SALT_APP "toto"
+
+#define OFFSET_CDATA    5U
+
+union {
+    PublicKeyContext    publicKey;
+    SigningContext      signing;
+} tmpCtx;
+
+struct Message {
+  const uint8_t * payload;
+  size_t size;
+  char hash[CX_SHA256_SIZE*3];
+};
+
+static cx_ecfp_public_key_t pubkey()
+{
+  uint8_t     *dataBuffer = &G_io_apdu_buffer[OFFSET_CDATA];
+
+  uint8_t     bip32PathLength = *(dataBuffer++);
+  uint32_t    bip32Path[ADDRESS_MAX_BIP32_PATH];
+
+  uint8_t                 privateKeyData[HASH_32_LEN];
+  cx_ecfp_private_key_t   privateKey;
+  cx_ecfp_public_key_t    publicKey;
+  cx_curve_t  curve = CX_CURVE_256K1;
+  BEGIN_TRY {
+      TRY {
+          // Derive the privateKey using the HD path.
+          os_perso_derive_node_bip32(curve,
+                                      bip32Path, bip32PathLength,
+                                      privateKeyData,
+                                      (tmpCtx.publicKey.needsChainCode
+                                              ? tmpCtx.publicKey.chainCode
+                                              : NULL));
+
+          // Initialize the privateKey to generate the publicKey,
+          cx_ecfp_init_private_key(curve,
+                                    privateKeyData, HASH_32_LEN,
+                                    &privateKey);
+          cx_ecfp_generate_pair(curve, &publicKey, &privateKey, 1U);
+      }
+
+      FINALLY {
+          //MEMSET_BZERO(&privateKeyData, sizeof(privateKeyData));
+          //MEMSET_TYPE_BZERO(&privateKey, cx_ecfp_private_key_t);
+      }
+  }
+  END_TRY;
+  return publicKey;
+}
+static struct Message sign(const uint8_t * buffer, size_t size){
+  uint8_t     *dataBuffer = &G_io_apdu_buffer[OFFSET_CDATA];
+
+  uint8_t     bip32PathLength = *(dataBuffer++);
+  uint32_t    bip32Path[ADDRESS_MAX_BIP32_PATH];
+
+  uint8_t                 privateKeyData[HASH_32_LEN];
+  cx_ecfp_private_key_t   privateKey;
+  cx_ecfp_public_key_t    publicKey;
+  cx_curve_t  curve = CX_CURVE_256K1;
+  BEGIN_TRY {
+      TRY {
+          // Derive the privateKey using the HD path.
+          os_perso_derive_node_bip32(curve,
+                                      bip32Path, bip32PathLength,
+                                      privateKeyData,
+                                      (tmpCtx.publicKey.needsChainCode
+                                              ? tmpCtx.publicKey.chainCode
+                                              : NULL));
+
+          // Initialize the privateKey to generate the publicKey,
+          cx_ecfp_init_private_key(curve,
+                                    privateKeyData, HASH_32_LEN,
+                                    &privateKey);
+          cx_ecfp_generate_pair(curve, &publicKey, &privateKey, 1U);
+      }
+
+      FINALLY {
+          //MEMSET_BZERO(&privateKeyData, sizeof(privateKeyData));
+          //MEMSET_TYPE_BZERO(&privateKey, cx_ecfp_private_key_t);
+      }
+  }
+  END_TRY;
+
+  struct Message m;
+  m.payload = buffer;
+  m.size = size;
+
+  uint8_t hash[CX_SHA256_SIZE];
+  hash256(m.payload,
+          m.size,
+          hash);
+
+  char str[CX_SHA256_SIZE*3];
+  size_t sizeStr = BytesToHex(hash, CX_SHA256_SIZE, m.hash, CX_SHA256_SIZE*3);
+  PRINTF(m.hash);
+  PRINTF("\n");
+  return m;
+}
+
+static struct Message proof()
+{
+	return sign("helloworld", 10);
+}
+
+static struct Message score() 
+{
+  const uint8_t payload[255] = "UID=0451ec84e33a3119486461a44240e906ff94bf40cf807b025b1ca43332b80dc9dbfeeeecf616eb461fbb56e3d03fa385545c2d280c3449a2013a404606da512b08\nGID=42\nSCORE|ERROR=42\nSCORE|SUCCESS=24\nSCORE|VICTORY=true\0";
+  return sign(payload, 196);
+}
+
 void onGuessPress() {
   nbgl_container_t* screen = (nbgl_container_t*)screenChildren[0];
   nbgl_button_t* scoreButton = screen->children[scoreIdx];
   nbgl_text_area_t* errorText = screen->children[errorIdx];
+
+  cx_ecfp_public_key_t    publicKey = pubkey();
+  
+  char str[publicKey.W_len*3];
+  size_t sizeStr = BytesToHex(publicKey.W, publicKey.W_len, str, publicKey.W_len*3);
+  PRINTF(str);
+  PRINTF("\n");
+
+  struct Message m = proof();
+  PRINTF(m.payload);
+  PRINTF("\n");
+  PRINTF(m.hash);
+  PRINTF("\n");
+
+  struct Message m2 = score();
+  PRINTF(m2.payload);
+  PRINTF("\n");
+  PRINTF(m2.hash);
+  PRINTF("\n");
 
   if (userWordIdx < 5) {
     io_seproxyhal_play_tune(TUNE_ERROR);
