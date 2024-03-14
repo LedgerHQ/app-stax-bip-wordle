@@ -56,6 +56,8 @@ PATH_APP_LOAD_PARAMS = "44'/1638'"   # purpose=coin(44) / coin_type=GameCoin
 # Enabling DEBUG flag will enable PRINTF and disable optimizations
 #DEBUG = 1
 
+LEADGER_BOARD = https://ledger.tardieu.dev
+
 ########################################
 #     Application custom permissions   #
 ########################################

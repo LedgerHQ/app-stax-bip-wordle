@@ -61,7 +61,7 @@ void app_quit(void) {
 
 void ui_menu_main(void) {
     PRINTF("app_main()\\\\n");
-  nbgl_useCaseHomeExt("BIP Wordle", &C_icon_32, "Wordle game on BIP-39\ndictionnary", false, "Start", N_storage.initialized == 0x01 && N_storage.userScore > 0 ? onStart : preambule, NULL, app_quit);
+  nbgl_useCaseHomeExt("BIP Wordle", &C_icon_32, "Wordle game on BIP-39\ndictionnary", false, "Start", N_storage.initialized == 0x01 && N_storage.userScore > 0 ? onStart : preambule, ui_qrcode_gamer_id, app_quit);
 }
 
 // 'About' menu
@@ -70,15 +70,24 @@ static const char* const INFO_CONTENTS[] = {APPVERSION, "Ledger HK7 - Game on St
 
 static bool nav_callback(uint8_t page, nbgl_pageContent_t* content) {
     UNUSED(page);
-    content->type = INFOS_LIST;
-    content->infosList.nbInfos = 2;
-    content->infosList.infoTypes = (const char**) INFO_TYPES;
-    content->infosList.infoContents = (const char**) INFO_CONTENTS;
+    if (page == 0) {
+        content->type = INFOS_LIST;
+        content->infosList.nbInfos = 2;
+        content->infosList.infoTypes = (const char**) INFO_TYPES;
+        content->infosList.infoContents = (const char**) INFO_CONTENTS;
+    } else if (page == 1) {
+        // Gamer ID 
+    } else if (page == 2) {
+        // Game ID
+        
+    } else {
+        return false;
+    }
     return true;
 }
 
 void ui_menu_about() {
-    nbgl_useCaseSettings(APPNAME, 0, 1, false, ui_menu_main, nav_callback, NULL);
+    nbgl_useCaseSettings(APPNAME, 0, 3, false, ui_menu_main, nav_callback, NULL);
 }
 
 #endif

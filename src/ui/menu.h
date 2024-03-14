@@ -27,3 +27,6 @@ void win(void);
  * Defeat screen
  */
 void lost(void);
+
+
+void ui_qrcode_gamer_id(void);
